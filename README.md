@@ -38,7 +38,7 @@ CBOD requires a working instance of GAMADV-XTD3 (https://github.com/taers232c/GA
 # History & Purpose
 I have over 20 years experience in IT - exclusively in K-12 environments. I have spent the last 10+ years as a Google Admin and have been using Chromebooks since the Samsung Series 3 (the thin, silver XE303). Our district switched to Dell Chromebooks shortly after and have been using various Dell models ever since.
 
-As our team has expanded, so has our needs. Our experience has been that not everyone is comfortable with the command line. Not everyone needs the same level of access (admin vs. non-admin). Some team members are more technical while others are more clerical. We built individual tools as needs arose, and those tools grew into an entire collection or suite.
+As our team has expanded, so has our needs. Our experience has been that not everyone is comfortable with the command line. Not everyone needs the same level of access (admin vs. non-admin). Some team members are more technical while others are more clerical. We built individual tools as needs arose, and those tools grew into an entire collection or suite - most of them are presented here.
 
 Simply stated, this utility is intended to gather all relevant information about the Chromebooks in your organization and allow you to interact with that information efficiently. This is not a GUI frontend for Advanced GAM. This does not replace the Google Admin Console.
 
