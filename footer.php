@@ -9,7 +9,7 @@
         <center>
         <hr>
             <h3>Thank you for using Chromebooks On Demand (CBOD)</h3>
-            <a href="https://github.com/TommyKnox/CBOD">CBOD on Github</a>
+            <a href="https://github.com/SteveAuxter/CBOD">CBOD on Github</a>
         </center>
     </body>
 </html>
