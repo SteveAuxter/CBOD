@@ -17,6 +17,7 @@
         
         <ul>
             <li><h3>Search: Find & Sort</h3></li>
+            <p><a href="https://github.com/SteveAuxter/CBOD/wiki/Menu:-Search">CBOD wiki on GitHub</a></p>
             <p>Enter full or partial Asset ID, Serial Number, or Note - then press <b>Search</b>.</p>
             <p>(Hint) Leave the search field blank - then press <b>Search</b> - will show all devices.</p>
             <p>Sorting will always default to Asset ID, but can be toggled to Serial Number or Notes field.</p>
