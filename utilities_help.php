@@ -30,6 +30,8 @@
             <b>Empty MySQL DB</b> - if you already have data in your MySQL database, you need to empty it first before populating it with new or updated data.<br>
             Then you may proceed with the usual step (1) <b>GAM to CSV</b> followed by step (2) <b>CSV to MySQL</b><br>
             <br>
+            <a href="https://github.com/SteveAuxter/CBOD/wiki/Utilities" target="_blank">Check the wiki on GitHub</a>
+            <br>
             <hr>
 
             <li><h3>GAM to CSV</h3></li>
