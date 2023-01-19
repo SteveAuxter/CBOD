@@ -102,6 +102,7 @@
                             <!-- <th>Manufacture Date</th> -->
                             <!-- <th>Auto Update Exp</th> -->
                             <th>Org Unit Path</th>
+                            <th>Device ID</th>
                         </tr>
                     </thead>
             <?php
@@ -128,6 +129,7 @@
                             <!-- <td><//?php echo $row["manufactureDate"]; ?></td> -->
                             <!-- <td><//?php echo $row["autoUpdateExpiration"]; ?></td> -->
                             <td><?php echo $row["orgUnitPath"]; ?></td>
+                            <td><?php echo $row["deviceId"]; ?></td>
                         </tr>
                         <?php
                     }
