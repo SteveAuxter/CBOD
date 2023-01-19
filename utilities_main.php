@@ -52,7 +52,12 @@
             } else {
                 echo "No database exists. You should go to UTILITIES > CSV to MySQL and import your collection into the local database <br>";
             }
-
+        
+			echo "<br><br>";
+			$cmndGamVer = sprintf($GAMpath . ' version');
+			exec($cmndGamVer,$infoGamVer);
+			echo "Advanced GAM Version: <b>" . substr($infoGamVer[0],12,7) ."</b><br>";
+			echo "Advanced GAM Path: <b>" . substr($infoGamVer[4],6,32) ."</b><br>";
         ?>
 
         <?php include "footer.php" ?>
