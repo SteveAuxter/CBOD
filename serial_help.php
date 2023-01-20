@@ -13,6 +13,7 @@
             <li><a href="serial_main.php">Device Info</a></li>
             <li><a href="serial_wipeusers.php">Clear Profiles</a></li>
             <li><a href="serial_powerwash.php">Remote Powerwash</a></li>
+            <li><a href="serial_disable.php">Disable/Enable</a></li>
             <li><a class="active" href="serial_help.php">Help</a></li>
         </ul>
         <hr>
@@ -41,8 +42,6 @@
             CBOD will use GAMADV-XTD3 to issue the "remote_powerwash" command to the device based on the Serial Number query.<br>
             NOTE: It is helpful to make sure the device is on while performing this action.<br>
 
-            <p><a href="https://github.com/SteveAuxter/CBOD/wiki/Serial-Number" target="_blank">Check the wiki on GitHub</a></p>
-            
         </ul>
 
         <?php include "footer.php" ?>
