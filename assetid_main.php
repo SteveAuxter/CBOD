@@ -14,6 +14,7 @@
             <li><a class="active" href="assetid_main.php">Device Info</a></li>
             <li><a href="assetid_wipeusers.php">Clear Profiles</a></li>
             <li><a href="assetid_powerwash.php">Remote Powerwash</a></li>
+            <li><a href="assetid_disable.php">Disable/Enable</a></li>
             <li><a href="assetid_help.php">Help</a></li>
         </ul>
         <hr>
@@ -58,6 +59,7 @@
                                     <th><b>Serial #</b></th>
                                     <th><b>Notes</b></th>
                                     <th><b>Model</b></th>
+                                    <th><b>Status</b></th>
                                     <th><b>Location</b></th>
                                     <th><b>User</b></th>
                                     <th><b>OS Version</b></th>
@@ -72,6 +74,7 @@
                                     <td><?php echo $row["serialNumber"]; ?></td>
                                     <td><?php echo (str_replace('\\\n', '<br>', $row["notes"])); ?></td>
                                     <td><?php echo $row["model"]; ?></td>
+                                    <td><?php echo $row["status"]; ?></td>
                                     <td><?php echo $row["annotatedLocation"]; ?></td>
                                     <td><?php echo $row["annotatedUser"]; ?></td>
                                     <td><?php echo $row["osVersion"]; ?></td>

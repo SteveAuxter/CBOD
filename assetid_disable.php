@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="mystyle.css">
-        <title>Asset ID: Clear Profiles</title>
+        <title>Asset ID: Disable/Reenable</title>
     </head>
     <body>
         <?php include "assetid_header.php" ?>
@@ -12,16 +12,16 @@
         
         <ul class="menu">
             <li><a href="assetid_main.php">Device Info</a></li>
-            <li><a class="active" href="assetid_wipeusers.php">Clear Profiles</a></li>
+            <li><a href="assetid_wipeusers.php">Clear Profiles</a></li>
             <li><a href="assetid_powerwash.php">Remote Powerwash</a></li>
-            <li><a href="assetid_disable.php">Disable/Enable</a></li>
+            <li><a class="active" href="assetid_disable.php">Disable/Enable</a></li>
             <li><a href="assetid_help.php">Help</a></li>
         </ul>
         <hr>
         
         <form name="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
         Search: <input type="text" name="searchterm">
-        <input type="submit" value="Clear Profiles">
+        <input type="submit" value="Disable or Reenable">
         </form>
         <br><br>
 
@@ -100,20 +100,45 @@
                     echo "<br>";
                 }
             }    
-            
+
             if ($counter == 1){
                 if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])){
                         
-                        $command1 = sprintf("$GAMpath issuecommand cros query asset_id:%s command wipe_users doit", $mysearch);
-                        exec($command1,$infoBasic);
+                        $command1 = sprintf("$GAMpath info cros query asset_id:%s status", $mysearch);
+                        exec($command1,$infoStatus);
+                        $gamStatus = trim(substr($infoStatus[1],10));
 
-                        echo "<h3>Clearing user profiles on device with Asset ID <font color='#008CBA'>$mysearch</font>. Here's what happened:</h3>";
+                        if ($gamStatus == 'ACTIVE') {
+                            $command2 = sprintf("$GAMpath update cros query \"asset_id:%s status:ACTIVE\" action disable", $mysearch);
+                            $sql = "UPDATE importdata SET status='DISABLED' WHERE annotatedAssetId='{$mysearch}'";
+                            echo "<h3>Current status is ACTIVE - sending DISABLE action to Asset ID <font color='#008CBA'>$mysearch</font>. Here's what happened:</h3>";
+                        } elseif ($gamStatus == 'DISABLED') {
+                            $command2 = sprintf("$GAMpath update cros query \"asset_id:%s status:DISABLED\" action reenable", $mysearch);
+                            $sql = "UPDATE importdata SET status='ACTIVE' WHERE annotatedAssetId='{$mysearch}'";
+                            echo "<h3>Current status is DISABLED - sending REENABLE action to Asset ID <font color='#008CBA'>$mysearch</font>. Here's what happened:</h3>";
+                        } else {
+                            echo "The device status is neither ACTIVE nor DISABLED.<br>";
+                        }
+                        exec($command2,$infoBasic);
+
                         foreach ($infoBasic as $data) {
                             echo (str_replace('\n', ' | ', $data));
-                            echo "<br>";
+                            echo "<br><br>";
                         }
-                        echo "<br>";
+
+                        //Create new connection & check connection
+                        $conn = new mysqli($DBserver, $DBuser, $DBpass, $DBname);
+                        if ($conn->connect_error) {
+                            die("Connection Failed: " . $conn->connect_error);
+                        }
+                        if ($conn->query($sql) === TRUE) {
+                            echo "Updated device status in the local database to match device status in Google.<br>";
+                        } else {
+                            echo "Error: " . $sql . "<br>" . $conn->error;
+                        }
+                        $conn->close();
+            
                     }
                 }
             } elseif ($counter == 0 && !empty($_GET['searchterm'])) {

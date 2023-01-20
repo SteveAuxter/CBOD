@@ -13,6 +13,7 @@
             <li><a href="assetid_main.php">Device Info</a></li>
             <li><a href="assetid_wipeusers.php">Clear Profiles</a></li>
             <li><a href="assetid_powerwash.php">Remote Powerwash</a></li>
+            <li><a href="assetid_disable.php">Disable/Enable</a></li>
             <li><a class="active" href="assetid_help.php">Help</a></li>
         </ul>
         <hr>
@@ -40,8 +41,6 @@
             Enter an Asset ID and click Remote Powerwash.<br>
             CBOD will use GAMADV-XTD3 to issue the "remote_powerwash" command to the device based on the Asset ID query.<br>
             NOTE: It is helpful to make sure the device is on while performing this action.<br>
-            
-            <p><a href="https://github.com/SteveAuxter/CBOD/wiki/Asset-ID" target="_blank">Check the wiki on GitHub</a></p>
 
         </ul>
 
