@@ -4,6 +4,15 @@
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="mystyle.css">
         <title>Serial Number: Device Info</title>
+        <style>
+            #rowInfoHeader {
+                text-align: right;
+                font-weight: bold;
+            }
+            #rowInfoData {
+                text-align: left;
+            }
+        </style>
     </head>
     <body>
         <?php include "serial_header.php" ?>
@@ -105,17 +114,51 @@
                 if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])){
                         
-                        $command1 = sprintf("$GAMpath info cros query id:%s annotatedAssetId annotatedLocation annotatedUser bootMode firmwareVersion lastEnrollmentTime lastSync macAddress model notes orgUnitPath osVersion platformVersion serialNumber status", $mysearch);
+                        $command1 = sprintf("$GAMpath print cros fields annotatedAssetId,annotatedLocation,annotatedUser,bootMode,firmwareVersion,lastEnrollmentTime,lastSync,macAddress,model,notes,orgUnitPath,osVersion,platformVersion,serialNumber,status query id:%s", $mysearch);
                         exec($command1,$infoBasic);
 
                         $command2 = sprintf("$GAMpath print crosactivity query id:%s users", $mysearch);
                         exec($command2,$crosActivity);
 
                         echo "<h3>Asking Google about device with Serial Number <font color='#008CBA'>$mysearch</font>. Here's what I found:</h3>";
-                        foreach ($infoBasic as $data) {
-                            echo (str_replace('\n', ' | ', $data));
-                            echo "<br>";
+                        $infoHeader = explode(",", $infoBasic[0]);
+                        $infoData = explode(",", $infoBasic[1]);
+                        $arrayLength = count($infoHeader);
+                        $infoArray = array();
+                        for ($x = 0; $x < $arrayLength; $x++) {
+                            $infoArray[$infoHeader[$x]] = $infoData[$x];
                         }
+                        $syncDate = $infoArray['lastSync'];
+                        $syncDateAdj = date('l, F jS, Y \a\t g:i:s a (T)', strtotime($syncDate));
+                        $enrollDate = $infoArray['lastEnrollmentTime'];
+                        $enrollDateAdj = date('l, F jS, Y \a\t g:i:s a (T)', strtotime($enrollDate));
+                        ?>
+                        <!-- Exit PHP and draw HTML table -->
+                        <table>
+                            <tr><td id="rowInfoHeader"><?php echo "Asset ID:"; ?></td><td id="rowInfoData"><?php echo $infoArray['annotatedAssetId']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Serial #:"; ?></td><td id="rowInfoData"><?php echo $infoArray['serialNumber']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Notes:"; ?></td><td id="rowInfoData"><?php echo (str_replace("\\\\n", " | ", $infoArray['notes'])); ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Model:"; ?></td><td id="rowInfoData"><?php echo $infoArray['model']; ?></td></tr>
+                            <?php if ($infoArray['status'] == 'ACTIVE' ) { ?>
+                            <tr><td id="rowInfoHeader"><?php echo "Status:"; ?></td><td id="rowInfoData" style="color: green; font-weight: bold"><?php echo $infoArray['status']; ?></td></tr>
+                            <?php } ?>
+                            <?php if ($infoArray['status'] == 'DISABLED' ) { ?>
+                            <tr><td id="rowInfoHeader"><?php echo "Status:"; ?></td><td id="rowInfoData" style="color: red; font-weight: bold"><?php echo $infoArray['status']; ?></td></tr>
+                            <?php } ?>
+                            <tr><td id="rowInfoHeader"><?php echo "Location:"; ?></td><td id="rowInfoData"><?php echo $infoArray['annotatedLocation']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "User:"; ?></td><td id="rowInfoData"><?php echo $infoArray['annotatedUser']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "WiFi MAC:"; ?></td><td id="rowInfoData"><?php echo $infoArray['macAddress']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "OS Version:"; ?></td><td id="rowInfoData"><?php echo $infoArray['osVersion']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Platform Version:"; ?></td><td id="rowInfoData"><?php echo $infoArray['platformVersion']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Firmware Version:"; ?></td><td id="rowInfoData"><?php echo $infoArray['firmwareVersion']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Org Unit Path:"; ?></td><td id="rowInfoData"><?php echo $infoArray['orgUnitPath']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Device ID:"; ?></td><td id="rowInfoData"><?php echo $infoArray['deviceId']; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Last Sync:"; ?></td><td id="rowInfoData"><?php echo $syncDateAdj . "<font color='#008CBA'> [" . $infoArray['lastSync'] . "]</font>"; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Last Enrollment:"; ?></td><td id="rowInfoData"><?php echo $enrollDateAdj . "<font color='#008CBA'> [" . $infoArray['lastEnrollmentTime'] . "]</font>"; ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Boot Mode:"; ?></td><td id="rowInfoData"><?php echo $infoArray['bootMode']; ?></td></tr>
+                        </table>
+                        <?php
+
                         echo "<br>";
                         //$crosHeaders = explode(",", $crosActivity[0]);
                         $crosData = explode(",", $crosActivity[1]);
