@@ -99,12 +99,12 @@
                         $counter++;
                         }
                     }
-                    echo "Found " . $counter . " result.<br>";
+                    echo "<center>Found " . $counter . " result.";
                     $conn->close();
                     $endtime = microtime(true);
                     $duration = $endtime - $starttime;
-                    echo "<br>";
-                    echo "Process took " . number_format((float)$duration, 4) . " seconds.<hr>";
+                    //echo "<br>";
+                    echo " Process took " . number_format((float)$duration, 4) . " seconds.</center><hr>";
                 } else {
                     echo "<br>";
                 }
