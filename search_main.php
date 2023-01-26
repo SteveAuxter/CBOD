@@ -78,7 +78,7 @@
                                 <tr>
                                     <td><a href="assetid_main.php?searchterm=<?php echo $row["annotatedAssetId"]; ?>" target="_blank"><?php echo $row["annotatedAssetId"]; ?></a></td>
                                     <td><a href="serial_main.php?searchterm=<?php echo $row["serialNumber"]; ?>" target="_blank"><?php echo $row["serialNumber"]; ?></a></td>
-                                    <td><?php echo (str_replace('\\\n', '<br>', $row["notes"])); ?></td>
+                                    <td><?php echo (str_replace(['\\\\n', '\\n'], '<br>', $row["notes"])); ?></td>
                                     <td><?php echo $row["model"]; ?></td>
                                     <td><?php echo $row["annotatedLocation"]; ?></td>
                                     <td><?php echo $row["annotatedUser"]; ?></td>
