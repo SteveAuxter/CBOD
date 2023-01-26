@@ -81,7 +81,7 @@
                                 <tr>
                                     <td><?php echo $row["annotatedAssetId"]; ?></td>
                                     <td><?php echo $row["serialNumber"]; ?></td>
-                                    <td><?php echo (str_replace('\\\n', '<br>', $row["notes"])); ?></td>
+                                    <td><?php echo (str_replace(['\\\\n', '\\n'], '<br>', $row["notes"])); ?></td>
                                     <td><?php echo $row["model"]; ?></td>
                                     <td><?php echo $row["status"]; ?></td>
                                     <td><?php echo $row["annotatedLocation"]; ?></td>
@@ -137,7 +137,7 @@
                         <table>
                             <tr><td id="rowInfoHeader"><?php echo "Asset ID:"; ?></td><td id="rowInfoData"><?php echo $infoArray['annotatedAssetId']; ?></td></tr>
                             <tr><td id="rowInfoHeader"><?php echo "Serial #:"; ?></td><td id="rowInfoData"><?php echo $infoArray['serialNumber']; ?></td></tr>
-                            <tr><td id="rowInfoHeader"><?php echo "Notes:"; ?></td><td id="rowInfoData"><?php echo (str_replace("\\\\n", " | ", $infoArray['notes'])); ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Notes:"; ?></td><td id="rowInfoData"><?php echo (str_replace(['\\\\n', '\\n'], ' | ', $infoArray['notes'])); ?></td></tr>
                             <tr><td id="rowInfoHeader"><?php echo "Model:"; ?></td><td id="rowInfoData"><?php echo $infoArray['model']; ?></td></tr>
                             <?php if ($infoArray['status'] == 'ACTIVE' ) { ?>
                             <tr><td id="rowInfoHeader"><?php echo "Status:"; ?></td><td id="rowInfoData" style="color: green; font-weight: bold"><?php echo $infoArray['status']; ?></td></tr>

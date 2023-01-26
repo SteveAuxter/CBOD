@@ -72,7 +72,7 @@
                                 <tr>
                                     <td><?php echo $row["annotatedAssetId"]; ?></td>
                                     <td><?php echo $row["serialNumber"]; ?></td>
-                                    <td><?php echo (str_replace('\\\n', '<br>', $row["notes"])); ?></td>
+                                    <td><?php echo (str_replace(['\\\\n', '\\n'], '<br>', $row["notes"])); ?></td>
                                     <td><?php echo $row["model"]; ?></td>
                                     <td><?php echo $row["status"]; ?></td>
                                     <td><?php echo $row["annotatedLocation"]; ?></td>
