@@ -97,15 +97,15 @@
                         </center>
                         <br>
                         <?php
-                        echo "Found " . $counter . " result(s).";
+                        echo "<center>Found " . $counter . " result(s).";
                     } else {
                         echo "Found 0 results.";
                     }
                     $conn->close();
                     $endtime = microtime(true);
                     $duration = $endtime - $starttime;
-                    echo "<br><br>";
-                    echo "Process took " . number_format((float)$duration, 4) . " seconds.";
+                    //echo "<br><br>";
+                    echo " Process took " . number_format((float)$duration, 4) . " seconds.</center>";
                 }
             } else {
                 echo "No database exists. You should go to UTILITIES > CSV to MySQL and import your collection into the local database";
