@@ -43,7 +43,7 @@
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])) {
                     $starttime = microtime(true);
-                    $mysearch = $_GET["searchterm"];
+                    $mysearch = strtoupper($_GET["searchterm"]);
 
                     $sql = "SELECT * FROM importdata WHERE serialNumber='{$mysearch}'";
 
