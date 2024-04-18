@@ -9,7 +9,7 @@
         <?php include "assetid_header.php" ?>
         <?php include "variables.php" ?>
         <?php //include "assetid_submenu.php" ?>
-        
+
         <ul class="menu">
             <li><a href="assetid_main.php">Device Info</a></li>
             <li><a href="assetid_wipeusers.php">Clear Profiles</a></li>
@@ -18,7 +18,7 @@
             <li><a href="assetid_help.php">Help</a></li>
         </ul>
         <hr>
-        
+
         <form name="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
         Search: <input type="text" name="searchterm">
         <input type="submit" value="Disable or Reenable">
@@ -42,10 +42,10 @@
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])) {
                     $starttime = microtime(true);
-                    $mysearch = $_GET["searchterm"];
+                    $mysearch = strtoupper($_GET["searchterm"]);
 
                     $sql = "SELECT * FROM importdata WHERE annotatedAssetId='{$mysearch}'";
-                    
+
                     $result = $conn->query($sql);
                     $counter = 0;
                     if ($result->num_rows > 0) {
@@ -99,12 +99,12 @@
                 } else {
                     echo "<br>";
                 }
-            }    
+            }
 
             if ($counter == 1){
                 if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])){
-                        
+
                         $command1 = sprintf("$GAMpath info cros query asset_id:%s status", $mysearch);
                         exec($command1,$infoStatus);
                         $gamStatus = trim(substr($infoStatus[1],10));
@@ -138,7 +138,7 @@
                             echo "Error: " . $sql . "<br>" . $conn->error;
                         }
                         $conn->close();
-            
+
                     }
                 }
             } elseif ($counter == 0 && !empty($_GET['searchterm'])) {
@@ -153,7 +153,7 @@
             echo "No database exists. You should go to UTLITIES > CSV to MySQL and import your collection into the local database";
         }
         ?>
-        
+
         <?php include "footer.php" ?>
     </body>
 </html>
