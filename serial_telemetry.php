@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="mystyle.css">
-        <title>Serial Number: Remote Powerwash</title>
+        <title>Serial Number: Telemetry Data</title>
     </head>
     <body>
         <?php include "serial_header.php" ?>
@@ -13,16 +13,16 @@
         <ul class="menu">
             <li><a href="serial_main.php">Device Info</a></li>
             <li><a href="serial_wipeusers.php">Clear Profiles</a></li>
-            <li><a class="active" href="serial_powerwash.php">Remote Powerwash</a></li>
+            <li><a href="serial_powerwash.php">Remote Powerwash</a></li>
             <li><a href="serial_disable.php">Disable/Enable</a></li>
-            <li><a href="serial_telemetry.php">Telemetry Data</a></li>
+            <li><a class="active" href="serial_telemetry.php">Telemetry Data</a></li>
             <li><a href="serial_help.php">Help</a></li>
         </ul>
         <hr>
 
         <form name="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
         Search: <input type="text" name="searchterm">
-        <input type="submit" value="Remote Powerwash">
+        <input type="submit" value="Get Telemetry Data">
         </form>
         <br><br>
 
@@ -43,7 +43,7 @@
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])) {
                     $starttime = microtime(true);
-                    $mysearch = $_GET["searchterm"];
+                    $mysearch = strtoupper($_GET["searchterm"]);
 
                     $sql = "SELECT * FROM importdata WHERE serialNumber='{$mysearch}'";
 
@@ -106,12 +106,16 @@
                 if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])){
 
-                        $command1 = sprintf("$GAMpath issuecommand cros query id:%s command remote_powerwash doit", $mysearch);
+                        $command1 = sprintf("$GAMpath info crostelemetry %s", $mysearch);
                         exec($command1,$infoBasic);
 
-                        echo "<h3>Performing a remote powerwash on device with Serial Number <font color='#008CBA'>$mysearch</font>. Here's what happened:</h3>";
+                        $command2 = sprintf("$GAMpath info crostelemetry %s > telemetry.txt", $mysearch);
+                        shell_exec($command2);
+
+                        echo "<h3>Querying for telemetry data on device with Serial Number <font color='#008CBA'>$mysearch</font>. Scroll down to see what was found:</h3>";
+                        echo "Download "; ?><a href="telemetry.txt" target="_blank">TEXT</a><?php echo " file <br><br> ";
                         foreach ($infoBasic as $data) {
-                            echo (str_replace('\n', ' | ', $data));
+                            echo str_replace(" ", "&nbsp;", $data);
                             echo "<br>";
                         }
                         echo "<br>";

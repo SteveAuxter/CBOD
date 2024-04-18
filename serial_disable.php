@@ -9,16 +9,17 @@
         <?php include "serial_header.php" ?>
         <?php include "variables.php" ?>
         <?php //include "serial_submenu.php" ?>
-        
+
         <ul class="menu">
             <li><a href="serial_main.php">Device Info</a></li>
             <li><a href="serial_wipeusers.php">Clear Profiles</a></li>
             <li><a href="serial_powerwash.php">Remote Powerwash</a></li>
             <li><a class="active" href="serial_disable.php">Disable/Enable</a></li>
+            <li><a href="serial_telemetry.php">Telemetry Data</a></li>
             <li><a href="serial_help.php">Help</a></li>
         </ul>
         <hr>
-        
+
         <form name="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
         Search: <input type="text" name="searchterm">
         <input type="submit" value="Disable or Reenable">
@@ -45,7 +46,7 @@
                     $mysearch = $_GET["searchterm"];
 
                     $sql = "SELECT * FROM importdata WHERE serialNumber='{$mysearch}'";
-                    
+
                     $result = $conn->query($sql);
                     $counter = 0;
                     if ($result->num_rows > 0) {
@@ -99,12 +100,12 @@
                 } else {
                     echo "<br>";
                 }
-            }    
+            }
 
             if ($counter == 1){
                 if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])){
-                        
+
                         $command1 = sprintf("$GAMpath info cros query id:%s status", $mysearch);
                         exec($command1,$infoStatus);
                         $gamStatus = trim(substr($infoStatus[1],10));
@@ -138,7 +139,7 @@
                             echo "Error: " . $sql . "<br>" . $conn->error;
                         }
                         $conn->close();
-            
+
                     }
                 }
             } elseif ($counter == 0 && !empty($_GET['searchterm'])) {
@@ -153,7 +154,7 @@
             echo "No database exists. You should go to UTLITIES > CSV to MySQL and import your collection into the local database";
         }
         ?>
-        
+
         <?php include "footer.php" ?>
     </body>
 </html>
