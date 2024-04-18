@@ -10,6 +10,9 @@
                 font-weight: bold;
             }
             #rowInfoData {
+                border-bottom-style: solid;
+                border-top-style: none;
+                border-width: thin;
                 text-align: left;
             }
         </style>
@@ -18,7 +21,7 @@
         <?php include "serial_header.php" ?>
         <?php include "variables.php" ?>
         <?php //include "serial_submenu.php" ?>
-        
+
         <ul class="menu">
             <li><a class="active" href="serial_main.php">Device Info</a></li>
             <li><a href="serial_wipeusers.php">Clear Profiles</a></li>
@@ -27,7 +30,7 @@
             <li><a href="serial_help.php">Help</a></li>
         </ul>
         <hr>
-        
+
         <form name="search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
         Search: <input type="text" name="searchterm">
         <input type="submit" value="Search for single Serial #">
@@ -51,10 +54,10 @@
             if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])) {
                     $starttime = microtime(true);
-                    $mysearch = $_GET["searchterm"];
+                    $mysearch = strtoupper($_GET["searchterm"]);
 
                     $sql = "SELECT * FROM importdata WHERE serialNumber='{$mysearch}'";
-                    
+
                     $result = $conn->query($sql);
                     $counter = 0;
                     if ($result->num_rows > 0) {
@@ -108,12 +111,12 @@
                 } else {
                     echo "<br>";
                 }
-            }    
-            
+            }
+
             if ($counter == 1){
                 if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     if (isset($_GET['searchterm']) && !empty($_GET['searchterm'])){
-                        
+
                         $command1 = sprintf("$GAMpath print cros fields annotatedAssetId,annotatedLocation,annotatedUser,bootMode,firmwareVersion,lastEnrollmentTime,lastSync,macAddress,model,notes,orgUnitPath,osVersion,platformVersion,serialNumber,status query id:%s", $mysearch);
                         exec($command1,$infoBasic);
 
@@ -128,6 +131,11 @@
                         for ($x = 0; $x < $arrayLength; $x++) {
                             $infoArray[$infoHeader[$x]] = $infoData[$x];
                         }
+                        //If you have line breaks in your notes field, they may import with newline (\\n) characters. Let's clean those up!
+                        $notesClean = str_replace(["\\\\n", "\\n"], "\n", $infoArray['notes']);
+                        $notesCleaner = nl2br($notesClean);
+                        $notesCleanest = str_replace("<br>", "", $notesCleaner);
+                        //Adjust date formats to a more readable version
                         $syncDate = $infoArray['lastSync'];
                         $syncDateAdj = date('l, F jS, Y \a\t g:i:s a (T)', strtotime($syncDate));
                         $enrollDate = $infoArray['lastEnrollmentTime'];
@@ -137,7 +145,7 @@
                         <table>
                             <tr><td id="rowInfoHeader"><?php echo "Asset ID:"; ?></td><td id="rowInfoData"><?php echo $infoArray['annotatedAssetId']; ?></td></tr>
                             <tr><td id="rowInfoHeader"><?php echo "Serial #:"; ?></td><td id="rowInfoData"><?php echo $infoArray['serialNumber']; ?></td></tr>
-                            <tr><td id="rowInfoHeader"><?php echo "Notes:"; ?></td><td id="rowInfoData"><?php echo (str_replace(['\\\\n', '\\n'], ' | ', $infoArray['notes'])); ?></td></tr>
+                            <tr><td id="rowInfoHeader"><?php echo "Notes:"; ?></td><td id="rowInfoData"><?php echo $notesCleaner; ?></td></tr>
                             <tr><td id="rowInfoHeader"><?php echo "Model:"; ?></td><td id="rowInfoData"><?php echo $infoArray['model']; ?></td></tr>
                             <?php if ($infoArray['status'] == 'ACTIVE' ) { ?>
                             <tr><td id="rowInfoHeader"><?php echo "Status:"; ?></td><td id="rowInfoData" style="color: green; font-weight: bold"><?php echo $infoArray['status']; ?></td></tr>
@@ -180,7 +188,7 @@
             echo "No database exists. You should go to UTLITIES > CSV to MySQL and import your collection into the local database";
         }
         ?>
-        
+
         <?php include "footer.php" ?>
     </body>
 </html>
